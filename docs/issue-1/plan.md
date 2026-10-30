@@ -39,10 +39,10 @@
 
 | 风险 | 影响 | 缓解 |
 |---|---|---|
-| 空仓首次推送后 PR base=main 不存在 | 高 | 首推 `feat/issue-1`；若平台不允许空 base PR，则由 QA/人工先合入 main（PR 依然创建） |
+| 空仓首次推送后 PR base=ci-check 不存在 | 高 | 首推 `feat/issue-1`；若平台不允许空 base PR，则由 QA/人工先合入 ci-check（PR 依然创建） |
 | 本地 Python 3.14 与 CI 3.11 差异 | 低 | 只用稳定标准库语法；`requires-python >=3.11` |
 | HTTP2 帧错误导致 push 失败 | 中 | 已预置 `http.version HTTP/1.1`；重试 ≤3 次 |
-| CI 全绿需真实 runner 验证 | 中 | 合并后由 push main 自动触发验证；PR 阶段以语法/结构校验为准 |
+| CI 全绿需真实 runner 验证 | 中 | 合并后由 push ci-check 自动触发验证；PR 阶段以语法/结构校验为准 |
 
 ## Open Questions
 

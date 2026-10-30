@@ -19,7 +19,7 @@
 - [x] Commit: `feat: #1 add tenant resource retrieval module skeleton with tests`
 
 ## Task 4: GitHub Actions CI
-- [x] Acceptance: `.github/workflows/ci.yml` PR/push main 触发；permissions contents: read（checks: write）；pip 缓存；junit artifact
+- [x] Acceptance: `.github/workflows/ci.yml` PR/push ci-check 触发；permissions contents: read（checks: write）；pip 缓存；junit artifact
 - [x] Verify: YAML 语法解析通过 + 关键字段断言（触发/权限/缓存/artifact）
 - [x] Files: .github/workflows/ci.yml
 - [x] Commit: `ci: #1 add minimal github actions workflow`
