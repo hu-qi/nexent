@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Test reports (generated locally by scripts/local-ci.sh)
+test-reports/
+
+# Secrets / env — never commit
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
