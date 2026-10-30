@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Least privilege by default; `checks: write` only where the job needs it
+# (e.g. to report check runs / annotations). No other write scopes granted.
+permissions:
+  contents: read
+  checks: write
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint & Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          # Built-in pip caching: keyed on requirements-dev.txt content hash.
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements-dev.txt
+            pyproject.toml
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install -e .
+
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Run tests (pytest + junit-xml)
+        run: |
+          mkdir -p test-reports
+          pytest tests/ -v --junitxml=test-reports/junit.xml
+
+      - name: Upload test report artifact
+        if: always()  # upload even when tests fail, for debugging
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-${{ matrix.python-version }}
+          path: test-reports/junit.xml
+          retention-days: 14
+          if-no-files-found: error
+
+  # Secrets usage example (华为云双轨对接预留): reference ONLY via
+  # ${{ secrets.* }} in `env:`/`with:` blocks, never hardcode values.
+  # enabled later by uncommenting and adding a `needs: test` guard:
+  #
+  # integration:
+  #   if: vars.ENABLE_INTEGRATION == 'true'
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   env:
+  #     HUAWEICLOUD_AK: ${{ secrets.HUAWEICLOUD_AK }}
+  #     HUAWEICLOUD_SK: ${{ secrets.HUAWEICLOUD_SK }}
+  #   steps:
+  #     - run: echo "integration stub"
