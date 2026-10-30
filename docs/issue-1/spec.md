@@ -9,7 +9,7 @@
 
 1. 仓库骨架：Python 项目结构（`src/` + `tests/` + 依赖声明）+ `README.md`
 2. 检索模块骨架：`src/nexent/resources/` 租户资源管理检索的基础目录结构与入口文件（对标上游 `sdk/nexent/` 的包布局风格：扁平包 + `__init__.py` + 领域子包）
-3. `.github/workflows/ci.yml`：PR / push → main 触发 checkout → 依赖安装 → lint → 单测
+3. `.github/workflows/ci.yml`：PR / push → ci-check 触发 checkout → 依赖安装 → lint → 单测
 4. 测试报告 artifact：pytest 输出 junit-xml，`upload-artifact` 上传
 
 ## Upstream Baseline（上游基线核查结论）
@@ -41,7 +41,7 @@ Lint:      ruff check .
 ## Project Structure
 
 ```
-.github/workflows/ci.yml    → CI 流水线（PR/push main）
+.github/workflows/ci.yml    → CI 流水线（PR/push ci-check）
 docs/issue-1/               → 本 Issue 文档（spec/plan/task）
 scripts/local-ci.sh         → 本地一键复现 CI 步骤（lint + test + junit 报告）
 src/nexent/                 → 检索模块包
@@ -92,7 +92,7 @@ class TenantResource:
 ## Success Criteria（与 Issue 验收一致）
 
 1. 仓库初始化完成（骨架 + README）
-2. `.github/workflows/ci.yml` 就绪，PR / push main 触发，步骤全绿
+2. `.github/workflows/ci.yml` 就绪，PR / push ci-check 触发，步骤全绿
 3. pip 依赖缓存生效（setup-python `cache: 'pip'`）
 4. 仓库无明文 AK/SK/token（grep 扫描通过）
 5. Workflow 默认权限 `contents: read`（按需 `checks: write`）

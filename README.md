@@ -51,7 +51,7 @@ print(repo.search("tenant-a", "报告"))  # -> [TenantResource(...)]
 ## 目录结构
 
 ```
-.github/workflows/ci.yml   # CI：PR/push main → lint → 单测 → junit artifact
+.github/workflows/ci.yml   # CI：PR/push ci-check → lint → 单测 → junit artifact
 src/nexent/
   resources/               # 租户资源管理检索模块（本期骨架）
     models.py              # TenantResource 数据模型
@@ -67,7 +67,7 @@ requirements-dev.txt       # 开发/测试工具链
 
 ## CI
 
-`.github/workflows/ci.yml` 在 **PR / push → main** 时触发：
+`.github/workflows/ci.yml` 在 **PR / push → ci-check** 时触发：
 
 | 步骤 | 说明 |
 |---|---|
